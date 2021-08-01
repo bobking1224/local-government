@@ -1,0 +1,147 @@
+---
+title: "stm testing"
+output: html_notebook
+editor_options: 
+  chunk_output_type: inline
+---
+
+Try executing this chunk by clicking the *Run* button within the chunk or by placing your cursor inside it and pressing *Cmd+Shift+Enter*. 
+
+# read the document
+```{r}
+PAJournals<-read.csv("/home/bobking1224/R/CSS/Local gov STM/dataNewMerged.csv", stringsAsFactors = FALSE)
+```
+
+```{r}
+library(stm)
+```
+
+```{r}
+processed <- textProcessor(PAJournals$documents, metadata = PAJournals, removestopwords = TRUE, customstopwords = c("local government"))
+```
+
+# Prepare the document
+```{r}
+out <- prepDocuments(processed$documents, processed$vocab, processed$meta)
+```
+```{r}
+docs <- out$documents
+vocab <- out$vocab
+meta <-out$meta
+```
+
+```{r}
+First_STM <- stm(documents = out$documents, vocab = out$vocab,
+              K = 25, 
+              max.em.its = 75, data = out$meta,
+              init.type = "Spectral", verbose = FALSE)
+```
+
+```{r}
+plot(First_STM)
+```
+
+```{r}
+labelTopics(First_STM)
+```
+
+```{r}
+thoughts3 <- findThoughts(First_STM, texts = meta$documents, n = 4, 
+                           topics = 25)$docs[[1]]
+
+idx1 <- match(thoughts3[1],meta$documents)
+title1 <- meta$Title[idx1]
+title1
+
+idx2 <- match(thoughts3[2],meta$documents)
+title2 <- meta$Title[idx2]
+title2
+
+idx3 <- match(thoughts3[3],meta$documents)
+title3 <- meta$Title[idx3]
+title3
+
+idx4 <- match(thoughts3[4],meta$documents)
+title4 <- meta$Title[idx4]
+title4
+```
+
+```{r}
+First_STM <- stm(documents = out$documents, vocab = out$vocab,
+              K = 26, 
+              max.em.its = 75, data = out$meta,
+              init.type = "Spectral", verbose = FALSE)
+```
+
+```{r}
+plot(First_STM)
+```
+
+```{r}
+labelTopics(First_STM)
+```
+
+```{r}
+First_STM <- stm(documents = out$documents, vocab = out$vocab,
+              K = 27, 
+              max.em.its = 75, data = out$meta,
+              init.type = "Spectral", verbose = FALSE)
+```
+
+```{r}
+plot(First_STM)
+```
+
+```{r}
+labelTopics(First_STM)
+```
+
+```{r}
+First_STM <- stm(documents = out$documents, vocab = out$vocab,
+              K = 28, 
+              max.em.its = 75, data = out$meta,
+              init.type = "Spectral", verbose = FALSE)
+```
+
+```{r}
+plot(First_STM)
+```
+
+```{r}
+labelTopics(First_STM)
+```
+
+```{r}
+First_STM <- stm(documents = out$documents, vocab = out$vocab,
+              K = 29, 
+              max.em.its = 75, data = out$meta,
+              init.type = "Spectral", verbose = FALSE)
+```
+
+```{r}
+plot(First_STM)
+```
+
+```{r}
+labelTopics(First_STM)
+```
+
+
+# show the most relevant text
+```{r}
+
+findThoughts(First_STM, texts = meta$documents,
+     n = 2, topics = 3)
+```
+
+```{r}
+findingk <- searchK(out$documents, out$vocab, K = c(10:30), data = meta, verbose=FALSE)
+
+plot(findingk)
+```
+     
+The preview shows you a rendered HTML copy of the contents of the editor. Consequently, unlike *Knit*, *Preview* does not run any R code chunks. Instead, the output of the chunk when it was last run in the editor is displayed.
+```{r}
+plot(findingk)
+```
+
